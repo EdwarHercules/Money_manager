@@ -34,9 +34,9 @@ public class CuentaController {
 
     // Endpoint para crear una nueva cuenta
     @PostMapping
-    public ResponseEntity<CuentaDTO> crearNuevaCuenta(@RequestParam Long clienteId,@RequestBody CuentaDTO cuentaDTO){
+    public ResponseEntity<CuentaDTO> crearNuevaCuenta(@RequestParam String email,@RequestBody CuentaDTO cuentaDTO){
         try {
-            CuentaDTO nuevaCuenta = cuentaService.crearCuentaParaCliente(clienteId, cuentaDTO);
+            CuentaDTO nuevaCuenta = cuentaService.crearCuentaParaCliente(email, cuentaDTO);
             return new ResponseEntity<>(nuevaCuenta, HttpStatus.OK);
         } catch (CuentaNoEncontradaException e){
             return ResponseEntity.notFound().build();

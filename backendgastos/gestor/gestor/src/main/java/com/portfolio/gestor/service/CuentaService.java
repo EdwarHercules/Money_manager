@@ -5,9 +5,13 @@ import com.portfolio.gestor.DTO.ClienteDTO;
 import com.portfolio.gestor.DTO.CuentaDTO;
 import com.portfolio.gestor.entity.Cliente;
 import com.portfolio.gestor.entity.Cuenta;
+import com.portfolio.gestor.entity.Persona;
+import com.portfolio.gestor.entity.Usuario;
 import com.portfolio.gestor.exceptions.CuentaNoEncontradaException;
 import com.portfolio.gestor.repository.ClienteRepository;
 import com.portfolio.gestor.repository.CuentaRepository;
+import com.portfolio.gestor.repository.PersonaRepository;
+import com.portfolio.gestor.repository.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +32,25 @@ public class CuentaService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private final UsuarioRepository usuarioRepositorio;
+
+    @Autowired
+    private final PersonaRepository personaRepositorio;
+
+
+    public CuentaService(CuentaRepository cuentaRepository, ClienteRepository clienteRepository, UsuarioRepository usuarioRepositorio, PersonaRepository personaRepositorio) {
+        this.cuentaRepository = cuentaRepository;
+        this.clienteRepository = clienteRepository;
+        this.usuarioRepositorio = usuarioRepositorio;
+        this.personaRepositorio = personaRepositorio;
+    }
+
+
     // Metodo para crear una cuenta para un cliente existente
-    public CuentaDTO crearCuentaParaCliente(Long clienteId, CuentaDTO cuentaDTO){
-        Optional<Cliente> clienteOptional = clienteRepository.findById(clienteId);
+    public CuentaDTO crearCuentaParaCliente(String email, CuentaDTO cuentaDTO){
+        Usuario usuario = usuarioRepositorio.findByEmail(email);
+        Optional<Cliente> clienteOptional = Optional.ofNullable(clienteRepository.findByPersonaId(usuario.getPersona().getId()));
         if(clienteOptional.isPresent()){
             Cliente cliente = clienteOptional.get();
 
@@ -45,7 +65,7 @@ public class CuentaService {
 
             return convertToDTO(savedCuenta);
         } else {
-            throw new CuentaNoEncontradaException("Cliente no encontrado con ID: " + clienteId);
+            throw new CuentaNoEncontradaException("Cliente no encontrado con email: " + email);
         }
     }
 

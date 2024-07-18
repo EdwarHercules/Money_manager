@@ -52,7 +52,7 @@ public class MovimientoService {
 
         switch (tipoMovimiento)
         {
-            case "Traspaso":
+            case "Transferencia":
                 if (cuentaOrigenId != null && cuentaDestinoId != null) {
                     return crearTraspaso(cuentaOrigenId, cuentaDestinoId, valor);
                 }
@@ -65,6 +65,7 @@ public class MovimientoService {
                 break;
             case "Deposito":
                 if (cuentaDestinoId != null) {
+                    logger.info("Realizando deposito");
                     return crearMovimientoEnCuenta(cuentaDestinoId, valor, "Deposito");
                 }
                 break;

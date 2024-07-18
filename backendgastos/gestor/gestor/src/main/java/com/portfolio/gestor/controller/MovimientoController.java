@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/movimientos")
+@RequestMapping("/api/movimientos")
 public class MovimientoController {
 
     @Autowired
@@ -74,6 +74,12 @@ public class MovimientoController {
 
         List<MovimientoListadoDTO> movimientos = movimientoService.obtenerMovimientosPorFechaYCliente(fechaInicio,fechaFin,clienteId);
         return  new ResponseEntity<>(movimientos, HttpStatus.OK);
+    }
+
+    @GetMapping("/ultimos/{cuentaId}")
+    public ResponseEntity<List<MovimientoListadoDTO>> obtenerUltimosMovimientos(@PathVariable("cuentaId") Long cuentaId) {
+        List<MovimientoListadoDTO> movimientos = movimientoService.findTop5cuentaIdOrderByFechaDesc(cuentaId);
+        return new ResponseEntity<>(movimientos, HttpStatus.OK);
     }
 
 
