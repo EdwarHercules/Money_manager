@@ -5,6 +5,8 @@ import Login from './components/auth/Login';
 import Home from './pages/Home';
 import Sidebar from './components/sidebar'; // Ajusta la ruta según tu estructura
 import Register from './components/auth/Register'; // Importa el componente de registro
+import CrearCuenta from './components/Cuentas/CrearCuenta';
+import Gestion from './components/Movimientos/Gestion';
 
 const App = () => {
   return (
@@ -15,6 +17,8 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+            <Route path="/gestion" element={<PrivateRoute><Gestion /></PrivateRoute>} />
+            <Route path='/crear-cuenta' element={<PrivateRoute><CrearCuenta/></PrivateRoute>}/>
             {/* Añade más rutas aquí según sea necesario */}
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
